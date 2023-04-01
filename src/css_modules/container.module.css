@@ -1,0 +1,3 @@
+.container {
+  @apply bg-neutral-900 border-red-500 border;
+}
