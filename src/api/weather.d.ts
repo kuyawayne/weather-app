@@ -1,50 +1,97 @@
-export interface WeatherResponse {
+interface WeatherProps {
+  datetime: string,
+  datetimeEpoch: number;
+  tempmax: number;
+  tempmin: number;
+  temp: number;
+  feelslikemax: number;
+  feelslikemin: number;
+  feelslike: number;
+  dew: number;
+  humidity: number;
+  precip: number;
+  precipprob: number;
+  precipcover: number;
+  preciptype: string[];
+  snow: number;
+  snowdepth: number;
+  windgust: number;
+  windspeed: number;
+  winddir: number;
+  pressure: number;
+  cloudcover: number;
+  visibility: number;
+  solarradiation: number;
+  solarenergy: number;
+  uvindex: number;
+  severerisk: number;
+  sunrise: string;
+  sunriseEpoch: number;
+  sunset: string;
+  sunsetEpoch: number;
+  moonphase: number;
+  conditions: string;
+  description: string;
+  icon: string;
+  stations: string[];
+  source: string;
+}
+
+interface WeatherByDayProps extends WeatherProps {
+  hours: WeatherProps[]
+}
+
+export interface WeatherResponseProps {
+  queryCost: number;
   latitude: number;
   longitude: number;
-  generationtime_ms: number;
-  utc_offset_seconds: number;
+  resolvedAddress: string;
+  address: string;
   timezone: string;
-  timezone_abbreviation: string;
-  elevation: number;
-  current_weather: {
-    temperature: number;
+  tzoffset: number;
+  days: WeatherByDayProps[],
+  alerts: string[],
+  stations: {
+    RPVD: {
+      distance: number;
+      latitude: number;
+      longitude: number;
+      useCount: number;
+      id: string;
+      name: string;
+      quality: number;
+      contribution: number
+    }
+  },
+  currentConditions: {
+    datetime: string,
+    datetimeEpoch: number;
+    temp: number;
+    feelslike: number;
+    humidity: number;
+    dew: number;
+    precip: number;
+    precipprob: number;
+    snow: number;
+    snowdepth: number;
+    preciptype: null,
+    windgust: null,
     windspeed: number;
-    winddirection: number;
-    weathercode: number;
-    time: number;
-  },
-  hourly_units: {
-    time: string;
-    temperature_2m: string;
-    apparent_temperature: string;
-    precipitation: string;
-    weathercode: string;
-    windspeed_10m: string;
-  },
-  hourly: {
-    time: number[],
-    temperature_2m: number[],
-    apparent_temperature: number[],
-    precipitation: number[],
-    weathercode: number[],
-    windspeed_10m: number[]
-  },
-  daily_units: {
-    time: string;
-    weathercode: string;
-    temperature_2m_max: string;
-    temperature_2m_min: string;
-    apparent_temperature_max: string;
-    apparent_temperature_min: string;
-    precipitation_sum: string;
-  },
-  daily: {
-    time: number[];
-    weathercode: number[];
-    temperature_2m_max: number[];
-    temperature_2m_min: number[];
-    apparent_temperature_max: number[];
-    apparent_temperature_min: number[];
-    precipitation_sum: number[];
+    winddir: number;
+    pressure: number;
+    visibility: number;
+    cloudcover: number;
+    solarradiation: number;
+    solarenergy: number;
+    uvindex: number;
+    conditions: string;
+    icon: string;
+    stations: string[],
+    source: string;
+    sunrise: string;
+    sunriseEpoch: number;
+    sunset: string;
+    sunsetEpoch: number;
+    moonphase: number;
   }
 }

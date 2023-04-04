@@ -7,102 +7,40 @@ import DashboardCard from "./components/DashboardCard";
 import Container from "./components/Container";
 import NavigationBar from "./components/NavigationBar";
 import { getWeather } from "./api";
-import { Button, Card } from "react-daisyui";
-import Skeleton from "./components/Skeleton";
-
-interface CoordinateProps {
-  latitude: number;
-  longitude: number;
-}
-
-interface WeatherProps {
-  day: number;
-  maxTemperature: number;
-  minTemperature: number;
-}
+import { Card } from "react-daisyui";
 
 const Application: FunctionComponent = (): JSX.Element => {
-  const [coordinates, setCoordinates] = React.useState<CoordinateProps>();
-  const [weatherData, setWeatherData] = React.useState<WeatherProps[]>([]);
-
-  React.useEffect(() => {
-    if (navigator.geolocation) {
-      return navigator.geolocation.getCurrentPosition(({ coords }) => {
-        const { latitude, longitude } = coords;
-
-        setCoordinates({ latitude, longitude });
-      });
-    }
-
-    return () => {
-      // unmount component
-    };
-  }, []);
-
-  const { isLoading, data } = useQuery("weather", () => {
-    const { timeZone } = Intl.DateTimeFormat().resolvedOptions();
-
-    if (coordinates) {
-      const { latitude, longitude } = coordinates;
-
-      return getWeather(latitude, longitude, timeZone);
-    }
-  }, {
-    enabled: !!coordinates
+  const { data } = useQuery("weather", () => {
+    return getWeather("Dumaguete City");
   });
-
-  React.useEffect(() => {
-    if (data) {
-      const { temperature_2m_max, time, temperature_2m_min } = data.data.daily;
-
-      const weatherData = time.map((date, index) => {
-        return {
-          day: date,
-          maxTemperature: temperature_2m_max[index],
-          minTemperature: temperature_2m_min[index]
-        };
-      });
-
-      setWeatherData(weatherData);
-    }
-  }, [data]);
-
-  console.log(data);
 
   return (
     <Container>
       <DashboardCard>
-        <NavigationBar />
+        <NavigationBar address={data?.data.resolvedAddress} />
 
         <section className="grid grid-cols-7 gap-4 p-4">
           {
-            isLoading ?
-              new Array(7).map((_, index) => {
-                return (
-                  <Skeleton key={index} />
-                );
-              })
-              :
-              weatherData.map(({ day, maxTemperature }, index) => {
-                const dayOfWeek = moment.unix(day).format("dddd");
+            data?.data.days.map((day, index) => {
+              if (index > 0) {
+                const dayOfWeek = moment(day.datetime).format("LL");
 
                 return (
-                  <Card key={index} className={"bg-neutral-800 col-span-1 p-4 w-full"}>
-                    <Card.Body>
-                      <Card.Title className={"justify-center"}>
-                        <span>{maxTemperature}</span>
-                        <span>{data?.data.daily_units.apparent_temperature_max}</span>
-                      </Card.Title>
+                  <div className="col-span-1" key={index}>
+                    <Card className="flex-row justify-between p-4">
+                      <div>
+                        <small className="text-gray-500">{dayOfWeek}</small>
+                        <p>{day.conditions}</p>
+                      </div>
 
-                      <h3 className={"text-center text-lg"}>{dayOfWeek}</h3>
-                    </Card.Body>
-
-                    <Card.Actions className={"justify-center"}>
-                      <Button className={"bg-blue-500 text-black hover:bg-blue-300"}>See More</Button>
-                    </Card.Actions>
-                  </Card>
+                      <div>
+                        <strong>{JSON.stringify(day.temp)} &deg;C</strong>
+                      </div>
+                    </Card>
+                  </div>
                 );
-              })
+              }
+            })
           }
         </section>
       </DashboardCard>

@@ -2,7 +2,7 @@ import React, { FunctionComponent, ReactNode } from "react";
 
 const DashboardCard: FunctionComponent<{ children: ReactNode }> = ({ children }) => {
   return (
-    <div className={"bg-[#101014] rounded-xl h-screen"}>
+    <div className={"bg-base-300 rounded-xl h-screen"}>
       {children}
     </div>
   );
