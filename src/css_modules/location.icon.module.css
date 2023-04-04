@@ -1,0 +1,7 @@
+.icon {
+  @apply w-6;
+}
+
+.input {
+  @apply w-64
+}
