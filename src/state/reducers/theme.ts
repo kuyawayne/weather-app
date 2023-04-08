@@ -6,7 +6,7 @@ interface InitialProps {
 }
 
 const initial: InitialProps = {
-  theme: "cyberpunk",
+  theme: "light",
   themes: ["acid", "aqua", "autumn", "black", "bumblebee", "business", "coffee", "corporate", "cmyk", "cyberpunk", "dracula", "emerald", "fantasy", "forest", "garden", "halloween", "lemonade", "light", "lofi", "luxury", "night", "pastel", "retro", "synthwave", "valentine", "wireframe", "winter"],
 };
 

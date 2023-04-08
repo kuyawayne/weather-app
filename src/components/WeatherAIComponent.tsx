@@ -1,15 +1,22 @@
-import axios from "axios";
 import React, { FunctionComponent } from "react";
 import { useQuery } from "react-query";
 import { WeatherProps } from "../api/weather";
+import { api } from "../api/api";
 
-const WeatherAIComponent: FunctionComponent<{data: WeatherProps}> = (props) => {
-  const {isLoading, data} = useQuery<{ message: string }>("weather-gpt", async () => {
-    const { data } = await axios.post<{message: string}>("http://localhost/openai", { data: props.data });
+const WeatherAIComponent: FunctionComponent<{ data: WeatherProps }> = (props) => {
+  const { isLoading, data } = useQuery<{ message: string }>("weather-gpt", async () => {
+    const { data } = await api().post<{ message: string }>("/openai", {
+      data: props.data
+    }, {
+      headers: {
+        "Accept": "application/json",
+        "Content-Type": "application/json"
+      }
+    });
 
     console.log(data.message);
 
-    return {message: data.message};
+    return { message: data.message };
   });
 
   return (

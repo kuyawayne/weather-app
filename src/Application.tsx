@@ -17,15 +17,19 @@ const Application: FunctionComponent = (): JSX.Element => {
     return getWeather("Dumaguete City");
   });
 
+  React.useEffect(() => {
+    document.body.classList.add("bg-base-100");
+  }, []);
+
   return (
-    <Container>
+    <Container className={"min-h-screen"}>
       <DashboardCard>
         <NavigationBar address={data?.data.resolvedAddress} />
 
-        <section className={"grid grid-cols-2 p-4"}>
+        <section className={"grid sm:grid-cols-1 lg:grid-cols-2 p-4"}>
           <div className={"col-span-1"}>
             <Card className={"p-4 border border-neutral"}>
-              <Card.Title className={"justify-center"}>
+              <Card.Title className={"justify-center text-center"}>
                 <h1>
                   <span>
                     {
@@ -71,7 +75,7 @@ const Application: FunctionComponent = (): JSX.Element => {
           <div className="col-span-1"></div>
         </section>
 
-        <section className="grid grid-cols-7 gap-4 p-4">
+        <section className="grid gap-4 p-4 lg:grid-cols-7 sm:grid-cols-2">
           {
             data?.data.days.map(({ datetime, icon, conditions, temp }, index) => {
               if (index > 0) {

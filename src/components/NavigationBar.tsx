@@ -23,21 +23,21 @@ const NavigationBar: FunctionComponent<NavigationBarProps> = (props): JSX.Elemen
 
   return (
     <Navbar>
-      <Navbar.Start className={"gap-2 px-2"}>
+      <Navbar.Start className={"gap-2 px-2 hidden lg:flex"}>
         <img src={Location} alt="location.png" className={styles.icon} />
         <p>{props.address}</p>
       </Navbar.Start>
 
-      <Navbar.Center>
+      <Navbar.Center className={"mx-auto block"}>
         <Input placeholder={"How's the weather for today here?"} color={"ghost"} size={"md"} className={styles.input} />
       </Navbar.Center>
 
-      <Navbar.End>
+      <Navbar.End className={"hidden lg:flex"}>
         <Select color={"accent"} onChange={handleSwitchTheme}>
           {
             state.themes.map((theme, index) => {
               return (
-                <option selected={state.theme === theme} value={theme} key={index}>{theme}</option>
+                <option selected={state.theme === theme} defaultValue={theme} key={index}>{theme}</option>
               );
             })
           }
